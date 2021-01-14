@@ -4,11 +4,18 @@ from .models import reservation
 from .models import CHAMBREDEP
 from .models import CHAMBREARR
 from .models import CHAMBREHORS
+from .models import client
 
 
 class employeesSerializer(serializers.ModelSerializer):
     class Meta:
         model = employees
+        fields = '__all__'
+
+
+class clientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = client
         fields = '__all__'
 
 
@@ -32,7 +39,7 @@ class CHAMBREARRSerializer(serializers.ModelSerializer):
 
 class CHAMBREHORSSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CHAMBREARR
+        model = CHAMBREHORS
         fields = '__all__'
 
 

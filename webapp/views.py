@@ -3,19 +3,22 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from .models import employees, CHAMBRE
+from .models import employees, CHAMBRE, client
 from .models import reservation
 from .models import CHAMBREDEP
 from .models import CHAMBREARR
 from .models import CHAMBREHORS
 
-from .serializers import reservationSerializer, CHAMBREDEPSerializer, CHAMBREHORSSerializer, CHAMBRESerializer
+from .serializers import reservationSerializer, CHAMBREDEPSerializer, CHAMBREHORSSerializer, CHAMBRESerializer, \
+    clientSerializer
 from .serializers import CHAMBREARRSerializer
 from .serializers import employeesSerializer
 
 from rest_framework.decorators import api_view
 from django.views.generic.list import ListView
 
+
+# ------------------------------------------ EMPLOYEE------------------------------
 
 @api_view(['GET'])
 def employeesList(request):
@@ -352,3 +355,54 @@ def chambredelete(request, pk):
     serializer = reservationSerializer(CHAMBRE1)
     CHAMBRE1.delete()
     return Response('delete')
+
+# ------------------------------------------ CLIENTS------------------------------
+
+@api_view(['GET'])
+def clientList(request):
+    client1 = client.objects.all()
+    serializer = clientSerializer(client1, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def clientdetail(request, pk):
+    try:
+        client1 = client.objects.get(id=pk)
+    except:
+        return Response('reponse vide pour ' + str(pk))
+    serializer = clientSerializer(client1)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def clientCreate(request):
+    serializer = clientSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def clientupdate(request, pk):
+    try:
+        client1 = client.objects.get(id=pk)
+    except:
+        return Response('reponse vide pour ' + str(pk))
+    serializer = clientSerializer(instance=client1, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def clientdelete(request, pk):
+    client1 = client.objects.get(id=pk)
+    try:
+        client1 = client.objects.get(id=pk)
+    except:
+        return Response('reponse vide pour ' + str(pk))
+    serializer = clientSerializer(client1)
+    client1.delete()
+    return Response('delete')
+

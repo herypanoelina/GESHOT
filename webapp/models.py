@@ -12,6 +12,19 @@ class employees(models.Model):
         return self.firstname
 
 
+class client(models.Model):
+    firstname = models.CharField(max_length=200)
+    lastname = models.CharField(max_length=100)
+    CIN = models.CharField(max_length=50)
+    DATE_DEL = models.DateTimeField()
+    ADRESSE = models.CharField(max_length=200)
+    mpp = models.CharField(max_length=100)
+    emp_id = models.IntegerField()
+
+    def __str__(self):
+        return self.firstname
+
+
 class CHAMBREDEP(models.Model):
     res_id = models.IntegerField()
     Client_id = models.IntegerField()

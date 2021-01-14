@@ -35,4 +35,9 @@ urlpatterns = [
     path('createchambre', views.chambrecreate, name="createdehors"),
     path('updatechambre/<str:pk>/', views.chambreupdate, name="updatehors"),
     path('deletechambre/<str:pk>/', views.chambredelete, name="deletea"),
-     ]
+    path('listeclient', views.clientList, name="employees"),
+    path('detailclient/<str:pk>/', views.clientdetail, name="detail"),
+    path('createclient', views.clientCreate, name="create"),
+    path('updateclient/<str:pk>/', views.clientupdate, name="update"),
+    path('deleteclient/<str:pk>/', views.clientdelete, name="delete"),
+    ]

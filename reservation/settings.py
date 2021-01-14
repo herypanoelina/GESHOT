@@ -12,16 +12,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-import DATABASES as DATABASES
-import dj_database_url
-
-# ...
-if os.environ.get('ENV') == 'PRODUCTION':
-    # ...
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import dj_database_url
+import django_heroku
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -90,15 +84,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'reservation.wsgi.application'
 
-# Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    print("Postgres URL not found, using sqlite instead")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -139,9 +139,10 @@ STATIC_URL = '/static/'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'c@n%u@91tum=@j392g20b8znh7dqfo-v%81))gxbbmu$=dy_*)')
 # development key for the moment
 
-ALLOWED_HOSTS = ['reservation.herokuapp.com']
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['toloreserv.herokuapp.com', '127.0.0.1']
 
-if os.environ.get('ENV') == 'panoelina':
+if os.environ.get('ENV') == 'PRODUCTION':
     # Static files settings
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -151,3 +152,6 @@ if os.environ.get('ENV') == 'panoelina':
     STATICFILES_DIRS = (
         os.path.join(PROJECT_ROOT, 'static'),
     )
+
+# ...
+django_heroku.setting(locals(()))
