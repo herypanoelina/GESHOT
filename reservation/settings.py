@@ -31,7 +31,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["toloreserv.herokuapp.com", "192.168.0.121", "127.0.0.1"]
 
 # Application definition
 
