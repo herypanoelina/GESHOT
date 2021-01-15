@@ -1,1 +1,1 @@
-gunicorn  hello:reservation -b xx.xxx.xxx.xx:8000
+gunicorn  hello:application -b xx.xxx.xxx.xx:8000
